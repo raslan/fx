@@ -1,22 +1,35 @@
 {
   "name": "site",
-  "type": "module",
   "version": "0.0.1",
+  "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "dev": "next dev",
+    "build": "npm run sync-changelog && next build",
+    "start": "next start",
+    "sync-changelog": "node scripts/sync-changelog.mjs",
+    "test": "vitest run"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.42.0",
-    "astro": "^7.2.10",
-    "sharp": "^0.35.3"
+    "@aliraslan/fx": "^0.1.0",
+    "@tanstack/react-table": "^9.2.4",
+    "fumadocs-core": "^16.15.11",
+    "fumadocs-mdx": "^15.4.1",
+    "fumadocs-ui": "^16.15.11",
+    "next": "^16.3.5",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0"
   },
   "devDependencies": {
-    "starlight-typedoc": "^0.23.1",
-    "typedoc": "^0.28.20",
-    "typedoc-plugin-markdown": "^4.13.0"
+    "@tailwindcss/postcss": "^4.3.3",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.0.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "jsdom": "^24.0.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.9.0",
+    "vitest": "^5.0.1"
   }
 }

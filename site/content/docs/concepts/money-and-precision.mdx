@@ -1,0 +1,61 @@
+---
+title: Money & Precision
+description: Why fx is built on Dinero.js, and the currency edge cases it handles correctly.
+---
+
+## Why Dinero.js
+
+`0.1 + 0.2 === 0.30000000000000004` in JavaScript — floating point
+arithmetic isn't safe for money. fx builds every calculation on
+[Dinero.js](https://dinerojs.com), which represents money as an integer
+amount at a fixed scale (cents, not dollars-as-a-float) and only
+converts to a display string at the very end, via `prettyPrint`.
+
+## Base and exponent
+
+Every currency fx supports is defined by its `base` (5 or 10) and
+`exponent` — how many minor units make one major unit, and in what
+numeral system:
+
+```ts
+interface CurrencyDefinition {
+  code: string;
+  base: 5 | 10;
+  exponent: number;
+}
+```
+
+Most currencies are `base: 10` — 2 minor units of precision (100 cents
+per dollar). fx hand-rolls all 156 supported currencies from ISO 4217,
+rather than depending on a third-party currency-data package that could
+break the build.
+
+### Base-5 currencies
+
+`MGA` (Malagasy ariary) and `MRU` (Mauritanian ouguiya) are base-5
+currencies — their minor unit divides the major unit into 5ths, not
+10ths:
+
+```ts
+CURRENCY_DATA.MGA; // { code: 'MGA', base: 5, exponent: 1 }
+CURRENCY_DATA.MRU; // { code: 'MRU', base: 5, exponent: 1 }
+```
+
+### Zero-decimal currencies
+
+`JPY` (Japanese yen) and `KRW` (South Korean won) have no minor unit at
+all — `exponent: 0`:
+
+```ts
+CURRENCY_DATA.JPY; // { code: 'JPY', base: 10, exponent: 0 }
+CURRENCY_DATA.KRW; // { code: 'KRW', base: 10, exponent: 0 }
+```
+
+<ExpressionPlayground preset="10000 jpy" small hideButtons />
+
+### Currencies fx deliberately excludes or re-adds
+
+`ILS` (Israeli new shekel) is explicitly unsupported. `STN` (São Tomé
+and Príncipe dobra), `SYP` (Syrian pound), and `ZWL` (Zimbabwean
+dollar) — sometimes dropped by other currency-data sources — are
+explicitly included, each as a standard base-10, 2-decimal currency.

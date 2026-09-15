@@ -1,5 +1,5 @@
 {
-  "name": "@raslan/fx",
+  "name": "@aliraslan/fx",
   "version": "0.1.0",
   "description": "Natural-language financial calculation, currency conversion, and live exchange rates as a plug-in logic library — no UI.",
   "license": "MIT",
@@ -65,7 +65,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "@testing-library/react": "^16.0.0",
-    "@types/node": "^20.11.0",
+    "@types/node": "^24.0.0",
     "@types/react": "^18.2.0",
     "eslint": "^9.20.0",
     "eslint-plugin-react-hooks": "^5.1.0",
@@ -75,7 +75,7 @@
     "tsup": "^8.0.2",
     "typescript": "^5.4.0",
     "typescript-eslint": "^8.20.0",
-    "vitest": "^1.4.0"
+    "vitest": "^5.0.1"
   },
   "packageManager": "npm@10.9.8"
 }

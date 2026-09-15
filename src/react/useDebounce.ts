@@ -6,7 +6,7 @@ import { useCallback, useRef } from 'react';
  * milliseconds (default 100ms).
  */
 export function useDebounce(): (callback?: () => void | Promise<void>, delay?: number) => void {
-  const timer = useRef<ReturnType<typeof setTimeout>>();
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   return useCallback((callback, delay) => {
     if (timer.current) {

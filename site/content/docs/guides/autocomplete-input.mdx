@@ -1,0 +1,52 @@
+---
+title: Wiring an Autocomplete Input
+description: currencyOptions wired into react-autocomplete-input for a searchable currency dropdown.
+---
+
+`currencyOptions` gives you a ready-made `{ value, label }` list for any
+autocomplete/combobox component. Here it's wired into
+[`react-autocomplete-input`](https://github.com/yury-dymov/react-autocomplete-input)
+the same way the app this library was extracted from actually shipped
+it: hit space twice, a searchable currency dropdown pops up, pick one,
+and it drops the currency *code* (not the label) straight into the
+expression.
+
+```tsx
+import { useState } from 'react';
+import TextInput from 'react-autocomplete-input';
+import { currencyOptions } from '@aliraslan/fx';
+import { useCurrency } from '@aliraslan/fx/react';
+
+const currencyLabels = currencyOptions.map((c) => c.label);
+
+function labelToCode(label: string) {
+  return currencyOptions.find((c) => c.label === label)?.value ?? label;
+}
+
+function Calculator() {
+  const [entry, setEntry] = useState('');
+  const { evaluate, rates, baseCurrency } = useCurrency({
+    endpoint: 'https://your-rate-provider.example/rates',
+  });
+
+  const result = rates[baseCurrency] ? evaluate(entry) : null;
+
+  return (
+    <div>
+      <TextInput
+        value={entry}
+        onChange={setEntry}
+        options={currencyLabels}
+        trigger={['  ']}
+        matchAny
+        maxOptions={1000}
+        changeOnSelect={(trigger, selected) => labelToCode(selected)}
+      />
+      {result && <p>{prettyPrint(result.value)}</p>}
+    </div>
+  );
+}
+```
+
+No submit button, no debounce needed — `evaluate` is cheap enough to
+run on every keystroke.

@@ -21,9 +21,11 @@ export function dineroFromFloat({
 }
 
 /**
- * Rate-provider maps are always expressed as "1 base = X target".
- * Dinero's `convert` wants the inverse: "1 target = Y base". This flips
- * a single target currency's rate into that shape.
+ * Does not invert anything — the actual "1 base = X target" ->
+ * "1 target = Y base" inversion happens upstream in
+ * `fetchExchangeRates`. This just re-keys an already-inverted rate
+ * (already in "1 target = Y base" form) under `baseCurrency`'s code,
+ * the shape Dinero's `convert()` expects its rate map to be in.
  */
 export function getInverseRates(
   targetCurrency: string,
@@ -38,7 +40,7 @@ export function getInverseRates(
 }
 
 /**
- * Converts a flat `{ code: rate }` map (as returned by `fetchOfficialRates`)
+ * Converts a flat `{ code: rate }` map (as returned by `fetchExchangeRates`)
  * into Dinero's integer-amount-at-a-scale representation, adding four
  * extra digits of scale over the currency's own exponent for precision
  * headroom during multiplication.

@@ -18,6 +18,6 @@ export function getCurrencyName(code: CurrencyCode): string {
 const popularCurrencies = ['EGP', 'GBP', 'EUR', 'USD'];
 
 /** Every supported currency as a `{ value, label }` option, most popular currencies first. */
-export const currencyOptions: CurrencyOption[] = Object.keys(CURRENCY_DATA)
+export const currencyOptions: CurrencyOption[] = (Object.keys(CURRENCY_DATA) as CurrencyCode[])
   .map((code) => ({ value: code, label: getCurrencyName(code) }))
   .sort((a, b) => popularCurrencies.indexOf(b.value) - popularCurrencies.indexOf(a.value));

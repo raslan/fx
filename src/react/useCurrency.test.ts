@@ -77,4 +77,21 @@ describe('useCurrency', () => {
     });
     await waitFor(() => expect(rates.fetchExchangeRates).toHaveBeenCalledTimes(2));
   });
+
+  it('surfaces a fetch failure via the error value instead of an unhandled rejection', async () => {
+    const store = createCurrenciesStore(memoryAdapter());
+    const { result } = renderHook(() => useCurrency({ store, endpoint: TEST_ENDPOINT }));
+
+    await waitFor(() => expect(store.getState().rates.USD).toBeDefined());
+    expect(result.current.error).toBeNull();
+
+    vi.spyOn(rates, 'fetchExchangeRates').mockRejectedValueOnce(new Error('network down'));
+
+    act(() => {
+      result.current.refresh();
+    });
+
+    await waitFor(() => expect(result.current.error).not.toBeNull());
+    expect(result.current.error?.message).toBe('network down');
+  });
 });

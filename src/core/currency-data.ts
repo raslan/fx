@@ -11,7 +11,7 @@ import type { CurrencyDefinition } from './types';
  * instead of depending on `@dinero.js/currencies`, which has no
  * stable release (see spec §2, "Dinero version decision").
  */
-export const CURRENCY_DATA: Record<string, CurrencyDefinition> = {
+export const CURRENCY_DATA = {
   AED: { code: 'AED', base: 10, exponent: 2 },
   AFN: { code: 'AFN', base: 10, exponent: 2 },
   ALL: { code: 'ALL', base: 10, exponent: 2 },
@@ -168,4 +168,4 @@ export const CURRENCY_DATA: Record<string, CurrencyDefinition> = {
   ZAR: { code: 'ZAR', base: 10, exponent: 2 },
   ZMW: { code: 'ZMW', base: 10, exponent: 2 },
   ZWL: { code: 'ZWL', base: 10, exponent: 2 },
-};
+} as const satisfies Record<string, CurrencyDefinition>;

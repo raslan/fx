@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { evaluateNaturalExpression } from '../core/tokenizer';
 import { fetchExchangeRates } from '../core/rates';
 import type { EvaluatedExpression } from '../core/types';
@@ -26,12 +26,23 @@ export function useCurrency(options: UseCurrencyOptions) {
   const store = options.store ?? defaultStore;
   const pollIntervalMs = options.pollIntervalMs ?? 300_000;
   const { rates, addCurrency, baseCurrency, setBaseCurrency } = store();
+  const [error, setError] = useState<Error | null>(null);
 
   const refresh = useCallback(
     (overrideCurrency?: string) => {
-      void fetchExchangeRates(endpoint, baseCurrency).then((r) => addCurrency(baseCurrency, r));
+      void fetchExchangeRates(endpoint, baseCurrency)
+        .then((r) => {
+          setError(null);
+          addCurrency(baseCurrency, r);
+        })
+        .catch((err) => setError(err instanceof Error ? err : new Error(String(err))));
       if (overrideCurrency) {
-        void fetchExchangeRates(endpoint, overrideCurrency).then((r) => addCurrency(overrideCurrency, r));
+        void fetchExchangeRates(endpoint, overrideCurrency)
+          .then((r) => {
+            setError(null);
+            addCurrency(overrideCurrency, r);
+          })
+          .catch((err) => setError(err instanceof Error ? err : new Error(String(err))));
       }
     },
     [endpoint, baseCurrency, addCurrency],
@@ -63,5 +74,5 @@ export function useCurrency(options: UseCurrencyOptions) {
     [baseCurrency, rates, refresh],
   );
 
-  return { rates, refresh, addCurrency, baseCurrency, setBaseCurrency, evaluate };
+  return { rates, refresh, addCurrency, baseCurrency, setBaseCurrency, evaluate, error };
 }

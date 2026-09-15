@@ -12,12 +12,13 @@ pnpm add @raslan/fx
 ## Evaluate an expression
 
 ```ts
-import { evaluateNaturalExpression, fetchOfficialRates, prettyPrint } from '@raslan/fx';
+import { evaluateNaturalExpression, fetchExchangeRates, prettyPrint } from '@raslan/fx';
 
-const rates = await fetchOfficialRates('USD');
+// Point this at any endpoint that returns { data: { rates: { [code]: string } } }
+const rates = await fetchExchangeRates('https://your-rate-provider.example/rates', 'USD');
 const { value } = evaluateNaturalExpression('100 eur + 20', 'USD', rates);
 
-console.log(prettyPrint(value)); // "$128.70" (using live rates)
+console.log(prettyPrint(value));
 ```
 
 ## With React
@@ -26,7 +27,9 @@ console.log(prettyPrint(value)); // "$128.70" (using live rates)
 import { useCurrency } from '@raslan/fx/react';
 
 function Calculator() {
-  const { evaluate, baseCurrency, setBaseCurrency } = useCurrency();
+  const { evaluate, baseCurrency, setBaseCurrency } = useCurrency({
+    endpoint: 'https://your-rate-provider.example/rates',
+  });
   const result = evaluate('50k jpy');
   return <p>{result.currency}: {result.value.toJSON().amount}</p>;
 }

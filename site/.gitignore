@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # generated changelog
 content/docs/changelog.mdx
+
+# generated API reference (meta.json is hand-authored and stays tracked)
+content/docs/api/*
+!content/docs/api/meta.json

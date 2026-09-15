@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "npm run sync-changelog && next build",
+    "build": "npm run gen-api-docs && npm run sync-changelog && next build",
     "start": "next start",
     "sync-changelog": "node scripts/sync-changelog.mjs",
+    "gen-api-docs": "typedoc --tsconfig ../tsconfig.typedoc.json --plugin typedoc-plugin-markdown --out content/docs/api --entryPointStrategy expand --entryPoints ../src/core/index.ts --entryPoints ../src/react/index.ts --skipErrorChecking --cleanOutputDir false && node scripts/inject-api-frontmatter.mjs",
     "test": "vitest run"
   },
   "dependencies": {
@@ -31,6 +32,8 @@
     "@vitejs/plugin-react": "^4.3.0",
     "jsdom": "^24.0.0",
     "tailwindcss": "^4.3.3",
+    "typedoc": "^0.28.20",
+    "typedoc-plugin-markdown": "^4.13.0",
     "typescript": "^5.9.0",
     "vitest": "^5.0.1"
   }

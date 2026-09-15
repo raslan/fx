@@ -1,0 +1,75 @@
+---
+title: React Integration
+description: useCurrency — live rates, polling, and expression evaluation in one hook.
+---
+
+`@aliraslan/fx/react` is a separate entry point — importing only
+`@aliraslan/fx` never pulls React into your bundle.
+
+## `useCurrency`
+
+```tsx
+import { useCurrency } from '@aliraslan/fx/react';
+
+function Calculator() {
+  const { rates, baseCurrency, setBaseCurrency, evaluate, refresh, error } = useCurrency({
+    endpoint: 'https://your-rate-provider.example/rates',
+    pollIntervalMs: 300_000, // default: 5 minutes
+  });
+
+  return null;
+}
+```
+
+**Returns:**
+
+| Field | Type | What it does |
+| --- | --- | --- |
+| `rates` | `Record<string, Rates>` | Cached rate maps, keyed by the currency they were fetched for. |
+| `baseCurrency` | `string` | The currently selected base currency. |
+| `setBaseCurrency` | `(code: string) => void` | Switch the base currency — triggers a fetch if that currency's rates aren't cached yet. |
+| `evaluate` | `(expr: string, overrideCurrency?: string) => EvaluatedExpression` | Parses and evaluates `expr` against `baseCurrency` (or `overrideCurrency`). |
+| `refresh` | `(overrideCurrency?: string) => void` | Manually re-fetch rates. |
+| `error` | `Error \| null` | Set when the most recent fetch failed. |
+
+## Polling
+
+`useCurrency` refreshes rates for the current base currency on an
+interval — `pollIntervalMs`, default 5 minutes. It also fetches
+immediately whenever `baseCurrency` changes and isn't already cached.
+
+## Persistence
+
+Rates and the selected base currency persist across reloads via
+`localStorage` by default (a no-op outside the browser, so this is
+safe in SSR). Bring your own storage — `sessionStorage`, an in-memory
+adapter for tests, anything implementing `PersistenceAdapter`
+(`{ getItem, setItem, removeItem }`) — by creating your own store:
+
+```tsx
+import { createCurrenciesStore } from '@aliraslan/fx/react';
+import { useCurrency } from '@aliraslan/fx/react';
+
+const store = createCurrenciesStore(sessionStorage);
+
+function Calculator() {
+  const currency = useCurrency({ endpoint: '...', store });
+  // ...
+}
+```
+
+Without a custom `store`, every `useCurrency` call in your app shares
+one module-level store — rates fetched by one component are
+immediately available to every other.
+
+## Debouncing input
+
+`useDebounce` is included for wiring a calculator input without
+re-evaluating on every keystroke, though `evaluate` is cheap enough
+that most consumers don't need it:
+
+```tsx
+import { useDebounce } from '@aliraslan/fx/react';
+
+const debouncedEntry = useDebounce(entry, 150);
+```

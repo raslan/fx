@@ -1,0 +1,67 @@
+---
+title: Fetching Exchange Rates
+description: fx's provider-agnostic contract for live exchange rates.
+---
+
+`fetchExchangeRates` has no built-in rate provider — you always supply
+the endpoint. This means switching providers, or pointing different
+parts of your app at different sources, is just a different argument,
+never a code change here.
+
+## The contract
+
+Your endpoint must respond to `GET {endpoint}?currency={baseCurrency}`
+with:
+
+```json
+{
+  "data": {
+    "currency": "USD",
+    "rates": {
+      "EUR": "0.91234",
+      "GBP": "0.78912"
+    }
+  }
+}
+```
+
+Every rate is `1 {baseCurrency} = X {code}`. fx inverts these by default
+(pass `{ invert: false }` if your provider already returns rates in the
+direction you want).
+
+## Worked example: Coinbase
+
+Coinbase's public `/v2/exchange-rates` endpoint matches this shape
+exactly, requires no API key, and allows cross-origin requests — it's
+what this docs site's own live widgets use:
+
+```ts
+import { fetchExchangeRates } from '@aliraslan/fx';
+
+const rates = await fetchExchangeRates(
+  'https://api.coinbase.com/v2/exchange-rates',
+  'USD',
+);
+// { EUR: 1.0961..., GBP: 1.2678..., ... }
+```
+
+## Error handling
+
+`fetchExchangeRates` throws if the response isn't `ok`:
+
+```ts
+try {
+  const rates = await fetchExchangeRates(endpoint, 'USD');
+} catch (err) {
+  // err.message === "Exchange rate request failed with status 500" (etc.)
+}
+```
+
+`useCurrency` (see [React Integration](/docs/guides/react-integration))
+catches this for you and exposes it as `error` instead of throwing.
+
+## Bring your own provider
+
+Any endpoint matching the contract above works — a serverless function
+proxying a paid rates API, a self-hosted service, a static JSON file
+during development. fx's only requirement is the response shape.

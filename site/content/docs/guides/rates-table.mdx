@@ -1,0 +1,73 @@
+---
+title: Browsing Exchange Rates with TanStack Table
+description: Build a searchable, sorted rates table with @tanstack/react-table.
+---
+
+`useCurrency`'s `rates` map is a flat `{ code: number }` object — enough
+to drive a real data table with almost no glue code, using plain
+`@tanstack/react-table` (no UI kit required):
+
+```tsx
+import { currencyOptions } from '@aliraslan/fx';
+import { useCurrency } from '@aliraslan/fx/react';
+import {
+  type ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { useMemo, useState } from 'react';
+
+interface TableRate {
+  currency: string;
+  exchangeRate: string;
+}
+
+const columns: ColumnDef<TableRate>[] = [
+  { accessorKey: 'currency', header: 'Currency' },
+  { accessorKey: 'exchangeRate', header: 'Exchange Rate' },
+];
+
+function RatesTable() {
+  const { rates, baseCurrency } = useCurrency({ endpoint: 'https://your-rate-provider.example/rates' });
+  const [search, setSearch] = useState('');
+
+  const data: TableRate[] = useMemo(
+    () =>
+      Object.entries(rates[baseCurrency] ?? {}).map(([code, rate]) => ({
+        currency: currencyOptions.find((c) => c.value === code)?.label ?? code,
+        exchangeRate: new Intl.NumberFormat('en', { notation: 'compact' }).format(rate),
+      })),
+    [rates, baseCurrency],
+  );
+
+  const table = useReactTable({
+    data,
+    columns,
+    state: { globalFilter: search },
+    onGlobalFilterChange: setSearch,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+  });
+
+  // render `table` however you like — see the live table below for one way.
+}
+```
+
+A few things worth calling out:
+
+- **Priority sort.** This docs site's own table (below) sorts a short
+  list of common currencies (EGP, GBP, EUR, USD) first, then falls back
+  to alphabetical — worth doing if your users mostly care about a
+  handful of currencies.
+- **Compact formatting.** `Intl.NumberFormat(..., { notation: 'compact' })`
+  turns `150.223122` into `150`, useful for a scannable table where
+  full precision isn't the point (use `prettyPrint` from
+  [Formatting Output](/docs/guides/formatting-output) where it is).
+- **Search** is TanStack Table's built-in `globalFilter` — no extra
+  library.
+
+Here's the live version:
+
+<RatesTable />

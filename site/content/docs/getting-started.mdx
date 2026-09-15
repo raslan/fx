@@ -1,0 +1,46 @@
+---
+title: Getting Started
+description: Install fx and evaluate your first expression.
+---
+
+## Install
+
+```package-install
+npm install @aliraslan/fx
+```
+
+## Evaluate an expression
+
+```ts
+import { evaluateNaturalExpression, fetchExchangeRates, prettyPrint } from '@aliraslan/fx';
+
+// any endpoint returning { data: { rates: { [code]: string } } } works —
+// Coinbase's public, unauthenticated /v2/exchange-rates is one example
+const rates = await fetchExchangeRates('https://api.coinbase.com/v2/exchange-rates', 'USD');
+const { value } = evaluateNaturalExpression('100 eur + 20', 'USD', rates);
+
+prettyPrint(value); // "$128.70"
+```
+
+Try it live:
+
+<ExpressionPlayground preset="100 eur + 20" small hideButtons />
+
+## With React
+
+```tsx
+import { useCurrency } from '@aliraslan/fx/react';
+
+function Calculator() {
+  const { evaluate, baseCurrency, setBaseCurrency } = useCurrency({
+    endpoint: 'https://your-rate-provider.example/rates',
+  });
+
+  const result = evaluate('50k jpy');
+  return <p>{prettyPrint(result.value)}</p>;
+}
+```
+
+Next: the [Calculator Guide](/docs/guides/calculator) covers everything the
+parser understands, or jump straight to [React Integration](/docs/guides/react-integration)
+for the full `useCurrency` API.

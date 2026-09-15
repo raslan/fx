@@ -12,5 +12,4 @@ pnpm add @raslan/fx
 
 ## Docs
 
-Full documentation: https://fx.raslan.dev (placeholder — update once
-the docs site from Task 16 is deployed).
+Full documentation: https://fx.raslan.dev

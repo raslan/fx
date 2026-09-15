@@ -58,8 +58,10 @@ describe('useCurrency', () => {
 
     await waitFor(() => expect(store.getState().rates.USD).toBeDefined());
 
-    act(() => {
+    await act(async () => {
       result.current.setBaseCurrency('EUR');
+      await Promise.resolve();
+      await Promise.resolve();
     });
     expect(store.getState().baseCurrency).toBe('EUR');
   });

@@ -1,0 +1,38 @@
+---
+title: Formatting Output
+description: prettyPrint, notations, and currencyDisplay.
+---
+
+`prettyPrint` renders a Dinero value as a localized currency string.
+
+```ts
+import { prettyPrint } from '@aliraslan/fx';
+
+prettyPrint(value); // "$19.99"
+```
+
+## Options
+
+```ts
+interface FormatOptions {
+  notation?: 'standard' | 'compact';
+  currencyDisplay?: 'code' | 'symbol' | 'narrowSymbol' | 'name';
+  overrideCurrency?: string;
+}
+```
+
+- **`notation: 'compact'`** — `Intl.NumberFormat`-style compact
+  notation: `$1.2M` instead of `$1,200,000.00`.
+- **`currencyDisplay`** — `'code'` renders `"USD 19.99"`, `'symbol'`
+  (the default) renders `"$19.99"`, `'name'` renders
+  `"19.99 US dollars"`.
+- **`overrideCurrency`** — format the value as a different currency
+  code than the one it was created with (useful after `evaluate`
+  returns a result in a currency other than your display default).
+
+```ts
+prettyPrint(value, { notation: 'compact' }); // "$1.2M"
+prettyPrint(value, { currencyDisplay: 'code' }); // "USD 19.99"
+```
+
+<ExpressionPlayground preset="1.2 million" small hideButtons />

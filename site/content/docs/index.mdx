@@ -1,6 +1,44 @@
 ---
 title: Introduction
-description: What fx is and why it exists.
+description: What fx is, and why it exists.
 ---
 
-Placeholder — rewritten in Task 7.
+fx parses natural-language financial expressions — `"20 usd + 5"`,
+`"10k gbp + 5m usd"`, `"(100 - 20) * 2 eur"` — into real, precise money
+values, and converts between currencies using live rates from whatever
+provider you point it at.
+
+## Why
+
+Every app that touches money ends up hand-rolling the same three things:
+a parser for how people actually type amounts (symbols, codes, magnitude
+shorthand, typos and all), currency-safe arithmetic that doesn't drift
+into float-precision garbage, and some glue code around a rates API. fx
+is that logic, extracted, tested, and published once — so you don't
+write it again.
+
+## Design philosophy
+
+- **No UI.** fx exports functions and, optionally, React hooks. It
+  never renders anything. What your calculator input looks like, how
+  you display results — entirely up to you.
+- **No opinions on your rate provider.** `fetchExchangeRates` takes
+  *your* endpoint. fx has no hardcoded API, no vendor lock-in — point
+  it at Coinbase's public endpoint, your own proxy, or anything that
+  returns the documented shape.
+- **React is optional.** `@aliraslan/fx/react` is a separate entry
+  point. Import only `@aliraslan/fx` and your bundle never sees React,
+  Zustand, or Immer.
+
+## When to reach for it
+
+You're building anything that takes a money amount as free-form text —
+a budgeting tool, an invoicing form, an expense tracker, a calculator —
+and want users to type `$1,200` or `1.2k usd` or `1200` and have it
+just work, in whatever currency they mean.
+
+## Next
+
+[Getting Started](/docs/getting-started) has the install and your first
+expression. [The Calculator Guide](/docs/guides/calculator) is the full
+tour of what the parser understands, with live examples.

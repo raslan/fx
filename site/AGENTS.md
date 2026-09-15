@@ -4,6 +4,12 @@
 npm run dev
 ```
 
+> API reference and changelog content under `content/docs/api/` and
+> `content/docs/changelog.mdx` are generated from `../src` and
+> `../CHANGELOG.md` — run `npm run gen-content` and commit the result after
+> changing fx's source or cutting a release; `next build` alone does NOT
+> regenerate them.
+
 This is a Fumadocs app (Next.js + `fumadocs-ui`/`fumadocs-mdx`), not the
 Astro/Starlight site it replaced.
 

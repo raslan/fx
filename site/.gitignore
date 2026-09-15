@@ -22,10 +22,3 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
-
-# generated changelog
-content/docs/changelog.mdx
-
-# generated API reference (meta.json is hand-authored and stays tracked)
-content/docs/api/*
-!content/docs/api/meta.json

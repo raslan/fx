@@ -5,10 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "npm run gen-api-docs && npm run sync-changelog && next build",
+    "build": "next build",
     "start": "next start",
     "sync-changelog": "node scripts/sync-changelog.mjs",
-    "gen-api-docs": "typedoc --tsconfig ../tsconfig.typedoc.json --plugin typedoc-plugin-markdown --out content/docs/api --entryPointStrategy expand --entryPoints ../src/core/index.ts --entryPoints ../src/react/index.ts --cleanOutputDir false && node scripts/inject-api-frontmatter.mjs",
+    "gen-api-docs": "typedoc && node scripts/inject-api-frontmatter.mjs",
+    "gen-content": "npm run gen-api-docs && npm run sync-changelog",
     "test": "vitest run"
   },
   "dependencies": {

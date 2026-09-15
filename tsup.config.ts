@@ -1,12 +1,12 @@
-import { defineConfig } from 'tsup';
+import { defineConfig, type Options } from 'tsup';
 
-const shared = {
+const shared: Partial<Options> = {
   format: ['esm', 'cjs'],
   dts: true,
   sourcemap: true,
   splitting: false,
   external: ['react'],
-} as const;
+};
 
 export default defineConfig([
   {

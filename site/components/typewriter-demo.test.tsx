@@ -32,6 +32,8 @@ describe('TypewriterDemo', () => {
         '(10k * 2 + 10 * (20k egp + eur10 thousand) / 4 - 5) + 10k',
       ),
     );
-    await waitFor(() => expect(screen.getByTestId('typewriter-result')).not.toHaveTextContent(''));
+    await waitFor(() =>
+      expect(screen.getByTestId('typewriter-result')).toHaveTextContent('$2,557,772.78'),
+    );
   });
 });

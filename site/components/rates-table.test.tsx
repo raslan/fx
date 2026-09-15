@@ -19,17 +19,17 @@ beforeEach(() => {
 describe('RatesTable', () => {
   it('renders one row per currency with a formatted rate', async () => {
     render(<RatesTable />);
-    await waitFor(() => expect(screen.getByText(/EUR/)).toBeInTheDocument());
-    expect(screen.getByText(/GBP/)).toBeInTheDocument();
-    expect(screen.getByText(/JPY/)).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText('Euro (EUR)')).toBeInTheDocument());
+    expect(screen.getByText('British Pound (GBP)')).toBeInTheDocument();
+    expect(screen.getByText('Japanese Yen (JPY)')).toBeInTheDocument();
   });
 
   it('filters rows via the search box', async () => {
     render(<RatesTable />);
-    await waitFor(() => expect(screen.getByText(/EUR/)).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Euro (EUR)')).toBeInTheDocument());
     const search = screen.getByPlaceholderText('Search currencies...');
     fireEvent.change(search, { target: { value: 'JPY' } });
-    await waitFor(() => expect(screen.queryByText(/EUR/)).not.toBeInTheDocument());
-    expect(screen.getByText(/JPY/)).toBeInTheDocument();
+    await waitFor(() => expect(screen.queryByText('Euro (EUR)')).not.toBeInTheDocument());
+    expect(screen.getByText('Japanese Yen (JPY)')).toBeInTheDocument();
   });
 });

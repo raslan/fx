@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { TypewriterDemo } from '@/components/typewriter-demo';
 
 export default function HomePage() {
@@ -9,9 +10,22 @@ export default function HomePage() {
         currency math in JS and React, without the headache.
       </p>
 
-      <pre className="mt-8 w-full max-w-md overflow-x-auto rounded-md border border-fd-border bg-fd-card p-4 text-left font-mono text-sm text-fd-card-foreground">
-        <code>npm install @aliraslan/fx</code>
-      </pre>
+      <div className="mt-8 w-full max-w-md text-left">
+        <Tabs items={['npm', 'pnpm', 'yarn', 'bun']}>
+          <Tab value="npm">
+            <code>npm install @aliraslan/fx</code>
+          </Tab>
+          <Tab value="pnpm">
+            <code>pnpm add @aliraslan/fx</code>
+          </Tab>
+          <Tab value="yarn">
+            <code>yarn add @aliraslan/fx</code>
+          </Tab>
+          <Tab value="bun">
+            <code>bun add @aliraslan/fx</code>
+          </Tab>
+        </Tabs>
+      </div>
 
       <TypewriterDemo />
 

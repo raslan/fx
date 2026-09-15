@@ -23,7 +23,7 @@ export default defineConfig({
       plugins: [
         starlightTypeDoc({
           entryPoints: ['../src/core/index.ts', '../src/react/index.ts'],
-          tsconfig: '../tsconfig.json',
+          tsconfig: '../tsconfig.typedoc.json',
         }),
       ],
     }),

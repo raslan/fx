@@ -7,7 +7,7 @@ describe('CURRENCY_DATA', () => {
   });
 
   it('does not include ILS (explicitly unsupported)', () => {
-    expect(CURRENCY_DATA.ILS).toBeUndefined();
+    expect('ILS' in CURRENCY_DATA).toBe(false);
   });
 
   it('includes STN, SYP, ZWL (explicitly re-added)', () => {

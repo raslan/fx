@@ -3,23 +3,38 @@
 @import 'fumadocs-ui/css/preset.css';
 
 @theme {
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+  /* Ayu Dark syntax colors, for the landing page's live-highlighted expression input. */
+  --color-ayu-orange: hsl(32, 100%, 65%);
+  --color-ayu-blue: hsl(204, 100%, 71%);
 }
 
-/*
- * Ayu Dark is this site's only palette — force it regardless of system
- * preference or the theme toggle (disabled anyway, see app/layout.tsx).
- *
- * This is deliberately a plain rule, NOT inside `@theme`: Tailwind v4
- * hoists `@theme` blocks to the very top of the compiled stylesheet, so
- * a `@theme` block here would land *before* fumadocs-ui's own
- * `.dark { --color-fd-background: ...; }` override (a plain rule) in
- * the final CSS — and on the resulting specificity tie (`:root` and
- * `.dark` are equal specificity), the later rule in the compiled output
- * wins, which would be theirs, not ours. A plain rule here keeps our
- * declaration where we actually wrote it: after their import, so it
- * wins regardless of whether `.dark` is present.
- */
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: translateY(0.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @keyframes reveal {
+    from {
+      opacity: 1;
+      transform: none;
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+}
+
+/* Plain rule, not `@theme` — Tailwind v4 hoists `@theme` blocks above plain CSS, which would put this
+   below fumadocs-ui's own `.dark { --color-fd-background: ... }` and lose the cascade tie. */
 :root {
   color-scheme: dark;
   --color-fd-background: hsl(216, 33%, 6%);
@@ -40,13 +55,7 @@
   --color-fd-ring: hsl(80, 65%, 57%);
 }
 
-/*
- * fumadocs-ui's neutral.css also carries a sidebar-scoped override,
- * `.dark #nd-sidebar { --color-fd-muted: ...; }`, whose specificity
- * (class + id) beats our plain `:root` block above — without a
- * same-or-higher-specificity rule here, the sidebar alone would keep
- * fumadocs' own gray instead of Ayu.
- */
+/* fumadocs-ui's `.dark #nd-sidebar { ... }` outranks the plain `:root` block above — match it here too. */
 :root #nd-sidebar {
   --color-fd-muted: hsl(216, 25%, 10%);
   --color-fd-secondary: hsl(216, 25%, 12%);

@@ -28,4 +28,25 @@ describe('ExpressionPlayground', () => {
     await user.type(input, '50');
     await waitFor(() => expect(screen.getByText('$50.00')).toBeInTheDocument());
   });
+
+  it('shows a base-currency selector when not compact', async () => {
+    render(<ExpressionPlayground preset="100" />);
+    expect(screen.getByRole('button', { name: 'Base currency' })).toBeInTheDocument();
+  });
+
+  it('hides the base-currency selector when hideButtons is set', async () => {
+    render(<ExpressionPlayground preset="100" hideButtons />);
+    expect(screen.queryByRole('button', { name: 'Base currency' })).not.toBeInTheDocument();
+  });
+
+  it('re-evaluates against the newly selected base currency', async () => {
+    const user = userEvent.setup();
+    render(<ExpressionPlayground preset="100" />);
+    await waitFor(() => expect(screen.getByText('$100.00')).toBeInTheDocument());
+
+    await user.click(screen.getByRole('button', { name: 'Base currency' }));
+    await user.type(screen.getByPlaceholderText('Search currencies…'), 'Euro');
+    await user.click(await screen.findByText(/Euro \(EUR\)/));
+    await waitFor(() => expect(screen.getByText('€100.00')).toBeInTheDocument());
+  });
 });

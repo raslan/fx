@@ -3,6 +3,7 @@
 import { prettyPrint } from '@aliraslan/fx';
 import { useCurrency } from '@aliraslan/fx/react';
 import { useState } from 'react';
+import { CurrencySelect } from '@/components/currency-select';
 import { RATES_ENDPOINT } from '@/lib/constants';
 
 export interface ExpressionPlaygroundProps {
@@ -19,7 +20,7 @@ export function ExpressionPlayground({
   small = false,
   hideButtons = false,
 }: ExpressionPlaygroundProps) {
-  const { evaluate, baseCurrency, rates } = useCurrency({ endpoint: RATES_ENDPOINT });
+  const { evaluate, baseCurrency, setBaseCurrency, rates } = useCurrency({ endpoint: RATES_ENDPOINT });
   const [entry, setEntry] = useState(preset);
 
   let output: string | null = null;
@@ -35,13 +36,16 @@ export function ExpressionPlayground({
   return (
     <div className="not-prose my-4 flex flex-col gap-3">
       {!hideButtons && !small && (
-        <button
-          type="button"
-          className="w-fit rounded-md border border-fd-border bg-fd-secondary px-3 py-1.5 text-sm text-fd-secondary-foreground hover:bg-fd-accent"
-          onClick={() => setEntry(preset)}
-        >
-          Reset to example
-        </button>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            className="w-fit rounded-md border border-fd-border bg-fd-secondary px-3 py-1.5 text-sm text-fd-secondary-foreground hover:bg-fd-accent"
+            onClick={() => setEntry(preset)}
+          >
+            Reset to example
+          </button>
+          <CurrencySelect value={baseCurrency} onChange={setBaseCurrency} />
+        </div>
       )}
       <input
         aria-label="Enter an expression to evaluate"

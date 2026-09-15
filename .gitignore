@@ -1,0 +1,9 @@
+# Internal docs
+CLAUDE.md
+**/CLAUDE.md
+docs/
+.claude/
+
+# Superpowers
+.superpowers/
+.worktrees/

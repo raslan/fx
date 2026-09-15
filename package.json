@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Natural-language financial calculation, currency conversion, and live exchange rates as a plug-in logic library — no UI.",
   "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raslan/fx.git"
+  },
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs",

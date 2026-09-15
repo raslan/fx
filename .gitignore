@@ -7,3 +7,7 @@ docs/
 # Superpowers
 .superpowers/
 .worktrees/
+
+# Node
+node_modules/
+dist/

@@ -9,7 +9,7 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RATES_ENDPOINT } from '@/lib/constants';
 
 interface TableRate {
@@ -32,20 +32,6 @@ const columns: ColumnDef<TableRate>[] = [
 export function RatesTable() {
   const { rates, baseCurrency } = useCurrency({ endpoint: RATES_ENDPOINT });
   const [search, setSearch] = useState('');
-  const searchInputRef = useRef<HTMLInputElement>(null);
-
-  // A plain onChange handler relies on React's controlled-input value
-  // tracker, which only fires when the DOM value differs from the value
-  // React last saw — so a directly-assigned `.value` followed by a
-  // dispatched 'input' event (as real browsers, and some test setups, do)
-  // can be silently ignored. Listening natively side-steps that tracker.
-  useEffect(() => {
-    const el = searchInputRef.current;
-    if (!el) return;
-    const handleInput = () => setSearch(el.value);
-    el.addEventListener('input', handleInput);
-    return () => el.removeEventListener('input', handleInput);
-  }, []);
 
   const data: TableRate[] = useMemo(() => {
     const baseRates = rates[baseCurrency];
@@ -61,7 +47,7 @@ export function RatesTable() {
       })
       .map(([code, rate]) => ({
         code,
-        currency: currencyOptions.find((c) => c.value === code)?.value ?? code,
+        currency: currencyOptions.find((c) => c.value === code)?.label ?? code,
         exchangeRate: formatCompactNumber(rate),
       }));
   }, [rates, baseCurrency]);
@@ -78,9 +64,9 @@ export function RatesTable() {
   return (
     <div className="not-prose">
       <input
-        ref={searchInputRef}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
         placeholder="Search currencies..."
-        defaultValue={search}
         className="mb-3 w-full max-w-xs rounded-md border border-fd-border bg-fd-card px-3 py-2 text-sm text-fd-card-foreground outline-none focus:border-fd-primary"
       />
       <table className="w-full border-collapse text-sm">

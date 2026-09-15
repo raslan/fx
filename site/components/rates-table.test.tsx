@@ -1,5 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { RatesTable } from './rates-table';
 
 beforeEach(() => {
@@ -19,19 +19,17 @@ beforeEach(() => {
 describe('RatesTable', () => {
   it('renders one row per currency with a formatted rate', async () => {
     render(<RatesTable />);
-    await waitFor(() => expect(screen.getByText('EUR')).toBeInTheDocument());
-    expect(screen.getByText('GBP')).toBeInTheDocument();
-    expect(screen.getByText('JPY')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText(/EUR/)).toBeInTheDocument());
+    expect(screen.getByText(/GBP/)).toBeInTheDocument();
+    expect(screen.getByText(/JPY/)).toBeInTheDocument();
   });
 
   it('filters rows via the search box', async () => {
     render(<RatesTable />);
-    await waitFor(() => expect(screen.getByText('EUR')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText(/EUR/)).toBeInTheDocument());
     const search = screen.getByPlaceholderText('Search currencies...');
-    search.dispatchEvent(new Event('focus'));
-    (search as HTMLInputElement).value = 'JPY';
-    search.dispatchEvent(new Event('input', { bubbles: true }));
-    await waitFor(() => expect(screen.queryByText('EUR')).not.toBeInTheDocument());
-    expect(screen.getByText('JPY')).toBeInTheDocument();
+    fireEvent.change(search, { target: { value: 'JPY' } });
+    await waitFor(() => expect(screen.queryByText(/EUR/)).not.toBeInTheDocument());
+    expect(screen.getByText(/JPY/)).toBeInTheDocument();
   });
 });

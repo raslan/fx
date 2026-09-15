@@ -1,0 +1,11 @@
+{
+  "title": "Guides",
+  "pages": [
+    "calculator",
+    "fetching-exchange-rates",
+    "react-integration",
+    "formatting-output",
+    "autocomplete-input",
+    "rates-table"
+  ]
+}

@@ -1,0 +1,66 @@
+---
+title: The Calculator Guide
+description: Everything evaluateNaturalExpression and useCurrency's evaluate understand, with live examples.
+---
+
+fx is a friendly financial translator. Here's what it can understand.
+
+## Numbers and currency talk
+
+<Callout title="Try it">
+  Every example below is a live, interactive widget — type in it.
+</Callout>
+
+**Numbers without a symbol** are implied to be your base currency:
+
+<ExpressionPlayground preset="1000" small hideButtons />
+
+**Numbers with a symbol** — include the currency symbol (`$`, `€`) before
+the number (`$20.50`, `€10`), spaces allowed:
+
+<ExpressionPlayground preset="$1000" small hideButtons />
+
+**Numbers with a currency code** — a 3-letter code (`EUR`, `USD`, `EGP`)
+before **or** after the number. fx even tolerates typos and stray
+spacing, so `USD100`, `$ 100`, `100usd`, `100 uSd`, and `usD100` are all
+the same:
+
+<ExpressionPlayground preset="1000 usd" small hideButtons />
+
+<Callout type="info" title="Grouping">
+  Use parentheses `()` to group terms and control evaluation order, same
+  as any calculator.
+</Callout>
+
+## Large numbers
+
+Writing `11650000` out is hard to read. Use shorthand after a space:
+
+- `k` — thousand (`1,000`)
+- `m` — million (`1,000,000`)
+- `b` — billion (`1,000,000,000`)
+- `t` — trillion (`1,000,000,000,000`)
+
+Or write them out verbally (`10 thousand`), or with commas
+(`10,000`) — all three represent the same number:
+
+<ExpressionPlayground preset="USD1k + 10 million usd + $11,650,000" small hideButtons />
+
+## Supported operations
+
+fx handles the arithmetic you'd expect:
+
+- **Basic arithmetic**: `+`, `-`, `*`, `/`
+- **Percentages**: expressed as multiplication — `15% * $200` is a 15%
+  tip on $200
+- **Exponents**: `^` — `2^3` is 2 multiplied by itself 3 times
+
+**Examples:**
+
+- `$50 + €20` — mixes currencies
+- `10k gbp + 5m usd` — uses abbreviations
+- `20 thousand + 5 billion` — magnitude words
+
+## Put it all together
+
+<ExpressionPlayground preset="(10k * 2 + 10 * (20k egp + eur10 thousand) / 4 - 5) + 10k" />

@@ -6,7 +6,9 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <RootProvider>{children}</RootProvider>
+        <RootProvider theme={{ forcedTheme: 'dark', defaultTheme: 'dark' }}>
+          {children}
+        </RootProvider>
       </body>
     </html>
   );

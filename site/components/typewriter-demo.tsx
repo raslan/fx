@@ -57,12 +57,14 @@ export function TypewriterDemo() {
 
       <div className="flex flex-wrap justify-center gap-2">
         {examples.map((example) => (
-          <code
+          <button
             key={example}
-            className="rounded-md border border-fd-border bg-fd-muted px-3 py-1.5 font-mono text-sm text-fd-muted-foreground"
+            type="button"
+            onClick={() => setEntry(example)}
+            className="cursor-pointer rounded-md border border-fd-border bg-fd-muted px-3 py-1.5 font-mono text-sm text-fd-muted-foreground transition-colors hover:border-fd-primary hover:text-fd-foreground"
           >
             {example}
-          </code>
+          </button>
         ))}
       </div>
 

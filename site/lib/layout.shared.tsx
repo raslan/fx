@@ -5,6 +5,12 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: 'fx',
     },
+    // This site ships one deliberate theme (Ayu Dark) — no light mode,
+    // so the built-in light/dark toggle is hidden rather than left to
+    // switch to Fumadocs' own default palette.
+    themeSwitch: {
+      enabled: false,
+    },
     links: [
       {
         text: 'Docs',
@@ -12,7 +18,7 @@ export function baseOptions(): BaseLayoutProps {
       },
       {
         type: 'icon',
-        url: 'https://github.com/aliraslan/fx',
+        url: 'https://www.github.com/raslan/fx',
         text: 'GitHub',
         icon: (
           <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden>

@@ -1,0 +1,64 @@
+{
+  "name": "@raslan/fx",
+  "version": "0.1.0",
+  "description": "Natural-language financial calculation, currency conversion, and live exchange rates as a plug-in logic library — no UI.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js",
+      "require": "./dist/react/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "dinero.js": "^2.0.0",
+    "immer": "^10.0.4",
+    "mathjs": "^12.4.1",
+    "zustand": "^4.5.2"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.1",
+    "@testing-library/react": "^16.0.0",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.0",
+    "jsdom": "^24.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.0",
+    "vitest": "^1.4.0"
+  },
+  "packageManager": "pnpm@9.0.0"
+}

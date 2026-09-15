@@ -1,0 +1,60 @@
+---
+title: Expression Syntax
+description: What evaluateNaturalExpression and useCurrency's evaluate understand, with concrete input/output examples.
+---
+
+`evaluateNaturalExpression` (and `useCurrency`'s `evaluate`) parse the
+same syntax. Every form below shows the input and its evaluated result.
+
+| Input | Evaluates to (base: USD) |
+| --- | --- |
+| `20` | `$20.00` |
+| `-5.5` | `-$5.50` |
+| `20 usd` | `$20.00` |
+| `usd20` | `$20.00` |
+| `100eur` | converted from EUR to USD |
+| `$20` | `$20.00` |
+| `€100` | converted from EUR to USD |
+| `20 usd + 5` | `$25.00` |
+| `(100 - 20) * 2` | `$160.00` |
+| `2k` | `$2,000.00` |
+| `2 thousand` | `$2,000.00` |
+
+<ExpressionPlayground preset="(100 - 20) * 2 usd" small hideButtons />
+
+## Plain numbers
+
+`20`, `-5.5` — implied to be in the expression's base currency.
+
+## Currency-tagged amounts
+
+`20 usd`, `usd20`, `100eur` — a 3-4 letter ISO code, any case, attached
+before or after the number, with or without a space.
+
+<ExpressionPlayground preset="100 uSd" small hideButtons />
+
+## Currency symbols
+
+`$20`, `€100`, `£50` — resolved to `USD`, `EUR`, `GBP` respectively
+before parsing.
+
+## Arithmetic
+
+Anything [mathjs's `evaluate`](https://mathjs.org/docs/expressions/syntax.html)
+supports, mixed freely with currency-tagged terms: `20 usd + 5`,
+`(100 - 20) * 2`.
+
+## Magnitude shorthand and words
+
+`2k`, `3m`, `1b`, `4t` (thousand/million/billion/trillion), or written
+out: `2 thousand`, `3 million`, `1 billion`, `4 trillion`.
+
+<ExpressionPlayground preset="2.5m + 500k" small hideButtons />
+
+## Conversion
+
+`evaluateNaturalExpression` converts every currency-tagged term into the
+expression's base currency before evaluating, using the `rates` you
+pass in (see [Fetching Exchange Rates](/docs/guides/fetching-exchange-rates)).
+`useCurrency`'s `evaluate` does this automatically using its cached
+rates.

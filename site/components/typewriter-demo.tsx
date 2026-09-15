@@ -68,18 +68,18 @@ export function TypewriterDemo() {
   const tokens = tokenizeExpression(entry);
 
   return (
-    <section className="not-prose w-full max-w-2xl">
-      <div className="flex items-center gap-1.5 font-mono text-sm text-fd-muted-foreground">
-        <span>fx(</span>
+    <section className="not-prose w-full max-w-2xl lg:max-w-5xl">
+      <div className="flex flex-wrap items-center gap-1.5 font-mono text-sm text-fd-muted-foreground sm:text-base">
+        <span>Pick a base currency:</span>
         <CurrencySelect value={baseCurrency} onChange={setBaseCurrency} variant="inline" />
-        <span>) evaluates:</span>
+        <span>and give it a spin:</span>
       </div>
 
       <div className="relative mt-2 rounded-lg border border-fd-border bg-fd-card transition-colors focus-within:border-fd-primary">
         {/* Colored overlay behind a transparent textarea, so highlighting doesn't break the native caret. */}
         <div
           aria-hidden
-          className="whitespace-pre-wrap break-words px-4 py-4 font-mono text-lg sm:text-xl"
+          className="whitespace-pre-wrap break-words px-4 py-4 font-mono text-lg sm:text-2xl"
         >
           {tokens.map((token, i) => (
             <span key={i} className={TOKEN_CLASS[token.kind]}>
@@ -96,19 +96,19 @@ export function TypewriterDemo() {
           onChange={(e) => setUserEntry(e.target.value)}
           placeholder="type an expression…"
           aria-label="Enter an expression to evaluate"
-          className="absolute inset-0 w-full resize-none whitespace-pre-wrap break-words bg-transparent px-4 py-4 font-mono text-lg text-transparent caret-fd-primary outline-none placeholder:text-fd-muted-foreground sm:text-xl"
+          className="absolute inset-0 w-full resize-none whitespace-pre-wrap break-words bg-transparent px-4 py-4 font-mono text-lg text-transparent caret-fd-primary outline-none placeholder:text-fd-muted-foreground sm:text-2xl"
         />
       </div>
 
       <div
         key={result ?? 'empty'}
-        className="mt-3 min-h-[3rem] pl-1 font-mono text-3xl font-bold text-fd-primary sm:text-4xl"
+        className="mt-3 min-h-[3rem] pl-1 font-mono text-3xl font-bold text-fd-primary sm:min-h-[3.5rem] sm:text-5xl"
         style={result ? { animation: 'reveal 0.3s ease-out' } : undefined}
       >
         {result && <>=&gt; {result}</>}
       </div>
 
-      <div className="mt-10 flex flex-col gap-1.5 font-mono text-sm">
+      <div className="mt-10 hidden flex-col gap-1.5 font-mono text-sm sm:flex sm:gap-2 sm:text-base">
         {history.map((example) => (
           <button
             key={example}

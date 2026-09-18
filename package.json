@@ -1,6 +1,6 @@
 {
   "name": "@aliraslan/fx",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Natural-language financial calculation, currency conversion, and live exchange rates as a plug-in logic library — no UI.",
   "license": "MIT",
   "repository": {

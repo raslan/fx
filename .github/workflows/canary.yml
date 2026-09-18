@@ -26,6 +26,10 @@ jobs:
       - run: npm test
       - run: npm run build
 
+      - name: Record previous canary version
+        id: prev_canary
+        run: echo "version=$(npm view @aliraslan/fx dist-tags.canary 2>/dev/null || true)" >> "$GITHUB_OUTPUT"
+
       - name: Version as canary snapshot
         run: npm version "0.0.0-canary-$(git rev-parse --short HEAD)" --no-git-tag-version
 
@@ -33,3 +37,10 @@ jobs:
         run: npm publish --tag canary --provenance
         env:
           NPM_CONFIG_PROVENANCE: true
+
+      # Deprecate is best-effort: OIDC trusted publishing only covers
+      # `npm publish`, so this may not be authenticated the same way and
+      # can fail — that must never take down the publish step above it.
+      - name: Deprecate previous canary
+        if: ${{ steps.prev_canary.outputs.version != '' }}
+        run: npm deprecate "@aliraslan/fx@${{ steps.prev_canary.outputs.version }}" "superseded by a newer canary build" || true

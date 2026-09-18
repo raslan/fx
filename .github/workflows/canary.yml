@@ -27,9 +27,9 @@ jobs:
       - run: npm run build
 
       - name: Version as canary snapshot
-        run: npx changeset version --snapshot canary
+        run: npm version "0.0.0-canary-$(git rev-parse --short HEAD)" --no-git-tag-version
 
       - name: Publish canary
-        run: npx changeset publish --tag canary --no-git-tag
+        run: npm publish --tag canary --provenance
         env:
           NPM_CONFIG_PROVENANCE: true
